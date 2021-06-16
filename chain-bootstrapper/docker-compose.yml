@@ -1,0 +1,15 @@
+version: '3'
+# SPDX-FileCopyrightText: © 2021 Alias Developers
+# SPDX-License-Identifier: MIT
+
+services:
+  alias-bootstrapper:
+    image: aliascash/docker-aliaswalletd-bootstrapper:latest
+    container_name: alias-bootstrapper
+    volumes:
+      - alias-data:/alias
+
+volumes:
+  alias-data:
+    driver: local
+    name: aliwa-server-docker_alias-data
