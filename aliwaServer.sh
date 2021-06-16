@@ -27,7 +27,7 @@ showUsage() {
     Handle ALiWa server
 
     Options:
-        start 
+        start
             Start ALiWa and all required containers
         setup
             Setup ALiWa. Not required as 'start' include this option
@@ -35,7 +35,14 @@ showUsage() {
             Stop ALiWa and all required containers
         clean
             Wipe out the Docker volumes to save disk space a/o prepare for
-            a clean new start.
+            a clean new start. Will stop the containers before.
+            Note:
+            The Docker volume with the blockchain will stay intact.
+            Use force-clean to wipe out this volume too.
+        force-clean
+            Wipe out all Docker volumes. This includes the blockchain volume
+            too, so the Bootstrap archive will be downloaded again within
+            the next start.
         logs
             Continuously show container logs. Hit Ctrl-C to stop log output.
         -h|help
@@ -74,10 +81,6 @@ stopALiWa() {
 cleanup() {
     stopALiWa
     info "Removing Docker volumes"
-#    if docker volume ls | grep -q aliwa-server-docker_alias-data ; then
-#        info " -> Removing volume aliwa-server-docker_alias-data"
-#        docker volume rm aliwa-server-docker_alias-data
-#    fi
     if docker volume ls | grep -q aliwa-server-docker_aliwa-data ; then
         info " -> Removing volume aliwa-server-docker_aliwa-data"
         docker volume rm aliwa-server-docker_aliwa-data
@@ -86,7 +89,14 @@ cleanup() {
         info " -> Removing volume aliwa-server-docker_mariadb-data"
         docker volume rm aliwa-server-docker_mariadb-data
     fi
-    info " -> Done"
+}
+
+forceCleanup() {
+    cleanup
+    if docker volume ls | grep -q aliwa-server-docker_alias-data ; then
+        info " -> Removing volume aliwa-server-docker_alias-data"
+        docker volume rm aliwa-server-docker_alias-data
+    fi
 }
 
 showLogs() {
@@ -128,6 +138,11 @@ stop)
     ;;
 clean)
     cleanup
+    info " -> Done"
+    ;;
+force-clean)
+    forceCleanup
+    info " -> Done"
     ;;
 logs)
     showLogs
