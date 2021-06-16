@@ -6,15 +6,23 @@ MAINTAINER yves@alias.cash
 
 RUN apk add \
     bash \
+    bc \
+    curl \
+    dialog \
     git \
     mariadb-client \
+    ncurses \
     nodejs \
     npm \
     mc
 
 WORKDIR /opt/
 ADD entrypoint.sh .
-RUN git clone https://github.com/dynamiccreator/aliwa-server.git \
+RUN git clone https://github.com/aliascash/alias-sh-rpc-ui.git \
+ && mkdir /root/.aliaswallet \
+ && cp /opt/alias-sh-rpc-ui/sample_config_daemon/alias.conf /root/.aliaswallet/
+
+RUN git clone https://github.com/HLXEasy/aliwa-server.git \
  && cd aliwa-server \
  && npm install
 

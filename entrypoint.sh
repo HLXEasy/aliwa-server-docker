@@ -39,6 +39,13 @@ sed -i \
     -e "s/cnf_db_database.*\$/cnf_db_database = \"${MARIADB_DATABASE}\"/g" \
     config.js
 
+echo "Updating Shell-UI configuration"
+sed -i \
+    -e "s/^rpcuser=.*\$/rpcuser=${RPCUSER}/g" \
+    -e "s/^rpcpassword=.*\$/rpcpassword=${RPCPASSWORD}/g" \
+    -e "s/^rpcconnect=.*\$/rpcconnect=alias-wallet/g" \
+    /root/.aliaswallet/alias.conf
+
 while true ; do
     echo .
     sleep 10
