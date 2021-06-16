@@ -1,0 +1,52 @@
+version: '3'
+# SPDX-FileCopyrightText: © 2021 Alias Developers
+# SPDX-License-Identifier: MIT
+
+services:
+  alias-wallet:
+    image: aliascash/docker-aliaswalletd:${ALIAS_VERSION}
+    container_name: alias-wallet
+    environment:
+      - RPCUSER=${ALIAS_WALLET_RPCPASSWORD}
+      - RPCPASSWORD=${ALIAS_WALLET_RPCUSER}
+    ports:
+      - 36657:36657
+    volumes:
+      - alias-data:/alias
+
+  aliwa-server:
+    image: aliascash/docker-aliwa-server:${ALIWA_VERSION}
+    container_name: aliwa-server
+    environment:
+      - RPCUSER=${ALIAS_WALLET_RPCPASSWORD}
+      - RPCPASSWORD=${ALIAS_WALLET_RPCUSER}
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    ports:
+      - 1521:1521
+      - 8080:8080
+      - 5500:5500
+    volumes:
+      - aliwa-data:/opt/aliwa
+    depends_on:
+      - "aliwa-database"
+
+  aliwa-database:
+    image: mariadb:${MARIADB_VERSION}
+    container_name: aliwa-database
+    environment:
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb-data:/var/lib/mysql
+
+volumes:
+  alias-data: { }
+  aliwa-data: { }
+  mariadb-data: { }
