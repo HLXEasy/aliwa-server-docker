@@ -46,7 +46,4 @@ sed -i \
     -e "s/^rpcconnect=.*\$/rpcconnect=alias-wallet/g" \
     /root/.aliaswallet/alias.conf
 
-while true ; do
-    echo .
-    sleep 10
-done
+node server.js
