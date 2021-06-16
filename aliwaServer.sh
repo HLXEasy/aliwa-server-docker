@@ -28,11 +28,11 @@ showUsage() {
 
     Options:
         start 
-            Start ALiWa...
+            Start ALiWa and all required containers
         setup
-            Setup ALiWa...
+            Setup ALiWa. Not required as 'start' include this option
         stop
-            Stop ALiWa...
+            Stop ALiWa and all required containers
         clean
             Wipe out the Docker volumes to save disk space a/o prepare for
             a clean new start.
