@@ -14,7 +14,8 @@ RUN apk add \
     ncurses \
     nodejs \
     npm \
-    mc
+    mc \
+    tor
 
 WORKDIR /opt/
 ADD entrypoint.sh .
