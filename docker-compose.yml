@@ -7,8 +7,8 @@ services:
     image: aliascash/docker-aliaswalletd:${ALIAS_VERSION}
     container_name: alias-wallet
     environment:
-      - RPCUSER=${ALIAS_WALLET_RPCPASSWORD}
-      - RPCPASSWORD=${ALIAS_WALLET_RPCUSER}
+      - RPCPASSWORD=${ALIAS_WALLET_RPCPASSWORD}
+      - RPCUSER=${ALIAS_WALLET_RPCUSER}
     ports:
       - 36657:36657
     volumes:
@@ -18,8 +18,8 @@ services:
     image: aliascash/docker-aliwa-server:${ALIWA_VERSION}
     container_name: aliwa-server
     environment:
-      - RPCUSER=${ALIAS_WALLET_RPCPASSWORD}
-      - RPCPASSWORD=${ALIAS_WALLET_RPCUSER}
+      - RPCPASSWORD=${ALIAS_WALLET_RPCPASSWORD}
+      - RPCUSER=${ALIAS_WALLET_RPCUSER}
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
