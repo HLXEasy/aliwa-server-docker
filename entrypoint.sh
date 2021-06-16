@@ -37,7 +37,7 @@ sed -i \
     -e "s/cnf_db_user.*\$/cnf_db_user = \"${MARIADB_USER}\"/g" \
     -e "s/cnf_db_password.*\$/cnf_db_password = \"${MARIADB_PASSWORD}\"/g" \
     -e "s/cnf_db_database.*\$/cnf_db_database = \"${MARIADB_DATABASE}\"/g" \
-    -e "s/cnf_read_block_height.*\$/cnf_read_block_height = \"${ALIAS_CHAIN_START_SYNC_HEIGHT}\"/g" \
+    -e "s/cnf_read_block_height.*\$/cnf_read_block_height = ${ALIAS_CHAIN_START_SYNC_HEIGHT}/g" \
     config.js
 
 echo "Updating Shell-UI configuration"
