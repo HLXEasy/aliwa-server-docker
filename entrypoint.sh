@@ -47,4 +47,11 @@ sed -i \
     -e "s/^rpcconnect=.*\$/rpcconnect=alias-wallet/g" \
     /root/.aliaswallet/alias.conf
 
-node server.js
+# ToDo: Implement proper check if Alias wallet is up and running!
+while true ; do
+    node server.js
+    for i in $(seq 10 -1 1) ; do
+        echo "ALiWa server exited, retry in $i seconds"
+        sleep 1
+    done
+done
