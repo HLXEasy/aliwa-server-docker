@@ -13,6 +13,10 @@ services:
       - 36657:36657
     volumes:
       - alias-data:/alias
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
 
   aliwa-server:
     image: aliascash/docker-aliwa-server:${ALIWA_VERSION}
