@@ -49,7 +49,7 @@ sed -i \
 
 # ToDo: Implement proper check if Alias wallet is up and running!
 while true ; do
-    node server.js
+    node server.js || true
     for i in $(seq 10 -1 1) ; do
         echo "ALiWa server exited, retry in $i seconds"
         sleep 1
