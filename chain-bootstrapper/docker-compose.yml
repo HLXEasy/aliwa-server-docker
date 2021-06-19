@@ -11,5 +11,5 @@ services:
 
 volumes:
   alias-data:
-    driver: local
-    name: aliwa-server-docker_alias-data
+    external:
+      name: aliwa-server-docker_alias-data

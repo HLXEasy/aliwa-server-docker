@@ -18,6 +18,10 @@ scriptName=$(basename "$0")
 . ./include/helpers_console.sh
 _init
 
+ALIAS_WALLET_VOLUME="aliwa-server-docker_alias-data"
+ALIWA_DATABASE_VOLUME="aliwa-server-docker_mariadb-data"
+ALIWA_SERVER_VOLUME="aliwa-server-docker_aliwa-data"
+
 # ---------------------------------------------------------------------------
 # Show info text and how to use the script
 showUsage() {
@@ -52,19 +56,26 @@ showUsage() {
 
 startALiWa() {
     info "Starting ALiWa"
-    if docker volume ls | grep -q aliwa-server-docker_alias-data ; then
-        info " -> Using existing Docker volume aliwa-server-docker_alias-data"
+    if docker volume ls | grep -q ${ALIAS_WALLET_VOLUME} ; then
+        info " -> Using existing Docker volume ${ALIAS_WALLET_VOLUME}"
     else
         setupALiWa
     fi
-    info " -> You can safely cancel the log output using Ctrl-C"
+    info " -> Starting main ALiWa containers"
+    info "    Please ignore initial errors during ALiWa server startup!"
+    info "    ALiWa will be able to connect as soon as the Alias container has"
+    info "    finished it's startup phase, which will take some seconds..."
+    info "    You can safely cancel the log output using Ctrl-C"
     docker-compose up -d && docker-compose logs -f
     info " -> Done"
 }
 
 setupALiWa() {
     info "Bootstrapping ALIAS blockchain"
-    info " -> You can safely cancel the log output using Ctrl-C"
+    info " -> Creating named volume"
+    docker volume create ${ALIAS_WALLET_VOLUME}
+    info " -> Starting bootstrap container"
+    info " -> Patience, the download and extraction of 2G would take some time..."
     cd ${ownLocation}/chain-bootstrapper
     docker-compose up -d && docker-compose logs -f
     docker-compose down
@@ -81,21 +92,21 @@ stopALiWa() {
 cleanup() {
     stopALiWa
     info "Removing Docker volumes"
-    if docker volume ls | grep -q aliwa-server-docker_aliwa-data ; then
-        info " -> Removing volume aliwa-server-docker_aliwa-data"
-        docker volume rm aliwa-server-docker_aliwa-data
+    if docker volume ls | grep -q ${ALIWA_SERVER_VOLUME} ; then
+        info " -> Removing volume ${ALIWA_SERVER_VOLUME}"
+        docker volume rm ${ALIWA_SERVER_VOLUME}
     fi
-    if docker volume ls | grep -q aliwa-server-docker_mariadb-data ; then
-        info " -> Removing volume aliwa-server-docker_mariadb-data"
-        docker volume rm aliwa-server-docker_mariadb-data
+    if docker volume ls | grep -q ${ALIWA_DATABASE_VOLUME} ; then
+        info " -> Removing volume ${ALIWA_DATABASE_VOLUME}"
+        docker volume rm ${ALIWA_DATABASE_VOLUME}
     fi
 }
 
 forceCleanup() {
     cleanup
-    if docker volume ls | grep -q aliwa-server-docker_alias-data ; then
-        info " -> Removing volume aliwa-server-docker_alias-data"
-        docker volume rm aliwa-server-docker_alias-data
+    if docker volume ls | grep -q ${ALIAS_WALLET_VOLUME} ; then
+        info " -> Removing volume ${ALIAS_WALLET_VOLUME}"
+        docker volume rm ${ALIAS_WALLET_VOLUME}
     fi
 }
 
