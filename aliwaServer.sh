@@ -127,7 +127,10 @@ if [[ ! -e .env ]] ; then
         -e "s/MARIADB_ROOT_PASSWORD=.*\$/MARIADB_ROOT_PASSWORD=${randomMariadbRootPassword}/g" \
         aliwa.env > .env
 
-    info " -> Credentials are randomly created but feel free to update them."
+    cp .env chain-bootstrapper/.env
+
+    info " -> Credentials are randomly created. If you update them manually,"
+    info "    you need to update them on the Alias data volume too!"
 fi
 
 # Parse command line arguments

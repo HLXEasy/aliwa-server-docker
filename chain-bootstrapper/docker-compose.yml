@@ -6,6 +6,8 @@ services:
   alias-bootstrapper:
     image: aliascash/docker-aliaswalletd-bootstrapper:latest
     container_name: alias-bootstrapper
+    environment:
+      - TESTNET=${USE_TESTNET}
     volumes:
       - alias-data:/alias
 

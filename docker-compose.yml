@@ -9,6 +9,7 @@ services:
     environment:
       - RPCPASSWORD=${ALIAS_WALLET_RPCPASSWORD}
       - RPCUSER=${ALIAS_WALLET_RPCUSER}
+      - TESTNET=${USE_TESTNET}
     ports:
       - 36657:36657
     volumes:
