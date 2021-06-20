@@ -31,6 +31,7 @@ fi
 echo "Updating ALiWa configuration"
 sed -i \
     -e "s/cnf_host.*\$/cnf_host = \"alias-wallet\"/g" \
+    -e "s/cnf_port.*\$/cnf_port = \"${RPCPORT}\"/g" \
     -e "s/cnf_username.*\$/cnf_username = \"${RPCUSER}\"/g" \
     -e "s/cnf_password.*\$/cnf_password = \"${RPCPASSWORD}\"/g" \
     -e "s/cnf_db_host.*\$/cnf_db_host = \"aliwa-database\"/g" \
