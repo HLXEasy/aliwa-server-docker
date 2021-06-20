@@ -5,6 +5,6 @@ Source: https://github.com/aliascash/alias-wallet
 
 # ############################################################################
 # MIT Licenses
-Files: *
+Files: .github/*
 Copyright: 2021 Alias Developers
 License: MIT
