@@ -18,9 +18,9 @@ scriptName=$(basename "$0")
 . ./include/helpers_console.sh
 _init
 
-ALIAS_WALLET_VOLUME="aliwa-server-docker_alias-data"
-ALIWA_DATABASE_VOLUME="aliwa-server-docker_mariadb-data"
-ALIWA_SERVER_VOLUME="aliwa-server-docker_aliwa-data"
+ALIAS_WALLET_VOLUME="docker-aliwa-server_alias-data"
+ALIWA_DATABASE_VOLUME="docker-aliwa-server_mariadb-data"
+ALIWA_SERVER_VOLUME="docker-aliwa-server_aliwa-data"
 
 # ---------------------------------------------------------------------------
 # Show info text and how to use the script

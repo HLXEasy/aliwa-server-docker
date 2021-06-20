@@ -12,4 +12,4 @@ services:
 volumes:
   alias-data:
     external:
-      name: aliwa-server-docker_alias-data
+      name: docker-aliwa-server_alias-data
