@@ -86,8 +86,22 @@ After the initial run of `aliwaServer.sh` the value of `TOR_SERVICE_KEY1` on the
    TOR_SERVICE_KEY1=...
    ```
 
+### Other configuration options
+There are multiple other configuration options on `.env`, which could be modified.
 
+One thing to notice: If the Alias daemon was bootstrapped and you change from MAINNET to TESTNET or vica versa, the bootstrapp will not be triggered again! You need to wipe out the Alias daemon Docker volume to trigger a new bootstrap process.
 
+### Start ALiWa server
+After the previous steps the ALiWa server is ready to run:
+```
+$ ./aliwaServer.sh start
+```
+
+This will download the required Docker images and start them. In detail the first image will be the [Alias Bootstrapper](https://hub.docker.com/repository/docker/aliascash/docker-aliaswalletd-bootstrapper), which prepares a Docker volume with the bootstrap data for further usage by the [Alias daemon](https://hub.docker.com/repository/docker/aliascash/docker-aliaswalletd). The bootstrap process might take some time as the bootstrap archive with around 2G must be downloaded and extracted. The other images are the [MariaDB database](https://hub.docker.com/_/mariadb), [Tor hidden service](https://hub.docker.com/r/goldy/tor-hidden-service) and the [ALiWa server](https://hub.docker.com/repository/docker/aliascash/docker-aliwa-server) itself.
+
+During the startup there will be some exit's of `aliwa-server` on the log. That's normal as the ALiWa server tries to connect to the Alias daemon, which will work as soon as the daemon is ready to accept RPC commands. Usually this is the case as soon as there is also log output from `alias-daemon`.
+
+Now the ALiWa server is scanning the blockchain starting at the value of `ALIAS_CHAIN_START_SYNC_HEIGHT` on `.env`. How long this sync take depends heavily on the used CPU power and disc I/O.
 
 # Social
 - Visit our website [Alias](https://alias.cash/) (ALIAS)
