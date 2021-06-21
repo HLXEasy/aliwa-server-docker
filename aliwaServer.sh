@@ -127,8 +127,6 @@ if [[ ! -e .env ]] ; then
         -e "s/MARIADB_ROOT_PASSWORD=.*\$/MARIADB_ROOT_PASSWORD=${randomMariadbRootPassword}/g" \
         aliwa.env > .env
 
-    cp .env chain-bootstrapper/.env
-
     info "    "
     info " -> Configuration file '${ownLocation}/.env' with random credentials created."
     info "    For now this is ok but if you change them after the alias-wallet container"
@@ -142,6 +140,10 @@ if [[ ! -e .env ]] ; then
     info "    "
     exit
 fi
+
+# Source .env and write chain-bootstrapper/.env with value of USE_TESTNET
+. ./.env
+echo "USE_TESTNET=${USE_TESTNET}" > chain-bootstrapper/.env
 
 # Parse command line arguments
 while getopts h? option; do
