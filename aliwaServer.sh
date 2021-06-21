@@ -116,7 +116,7 @@ showLogs() {
 }
 
 if [[ ! -e .env ]] ; then
-    info "Configuration file '.env' not found, copying it from template 'aliwa.env'."
+    info "Configuration file '.env' not found, creating it from template 'aliwa.env'."
 
     # Generate random password and put it onto the configuration file
     randomRPCPassword=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 44 | head -n 1)
@@ -129,8 +129,18 @@ if [[ ! -e .env ]] ; then
 
     cp .env chain-bootstrapper/.env
 
-    info " -> Credentials are randomly created. If you update them manually,"
-    info "    you need to update them on the Alias data volume too!"
+    info "    "
+    info " -> Configuration file '${ownLocation}/.env' with random credentials created."
+    info "    For now this is ok but if you change them after the alias-wallet container"
+    info "    was created, you need to update them inside the container too!"
+    info " -> This script will be stopped now as you need to put the base64 encoded"
+    info "    private key of your Tor Onion v3 address onto the configuration file."
+    info "    Use variable 'TOR_SERVICE_KEY1' there."
+    info "    "
+    info "    Generate the value like 'cat <your-private-key-file> | base64' and put"
+    info "    the result in one line onto the configuration file."
+    info "    "
+    exit
 fi
 
 # Parse command line arguments
