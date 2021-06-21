@@ -30,6 +30,17 @@ showUsage() {
 
     Handle ALiWa server
 
+    Initial execution will just create the configuration file '.env' and exit.
+    After that the configuration needs to be completed with the base64 encoded
+    private key of the Tor Onion v3 address, which should be used to access
+    the ALiWa server.
+
+    The configuration also contains randomly generated credentials to access
+    the Alias daemon and the ALiWa database. As long as the Alias daemon
+    container is not instantiated, you can modify these credentials if you
+    like. If you modify them afterwards, you also need to modify the file
+    '/alias/.aliaswallet/alias.conf' on the Alias daemon container.
+
     Options:
         start
             Start ALiWa and all required containers
