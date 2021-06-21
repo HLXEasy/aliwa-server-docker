@@ -54,6 +54,19 @@ services:
     volumes:
       - mariadb-data:/var/lib/mysql
 
+  tor-hidden-service:
+    image: goldy/tor-hidden-service:${TOR_VERSION}
+    container_name: tor-hidden-service
+    links:
+      - aliwa-server
+    environment:
+      # Set mapping ports
+      SERVICE1_TOR_SERVICE_HOSTS: 3000:aliwa-server:3000
+      SERVICE1_TOR_SERVICE_VERSION: '3'
+      # Tor v3 address private key base 64 encoded
+      SERVICE1_TOR_SERVICE_KEY: |
+        ${TOR_SERVICE_KEY1}
+
 volumes:
   alias-data: { }
 #  aliwa-data: { }
