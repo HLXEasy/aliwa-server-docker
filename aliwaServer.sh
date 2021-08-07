@@ -80,7 +80,7 @@ startALiWa() {
     info "    ALiWa will be able to connect as soon as the Alias container has"
     info "    finished it's startup phase, which will take some seconds..."
     info "    You can safely cancel the log output using Ctrl-C"
-    docker-compose up -d && docker compose logs --tail=500 -f
+    docker-compose up -d && docker-compose logs --tail=500 -f
     info " -> Done"
 }
 
