@@ -60,6 +60,9 @@ showUsage() {
             the next start.
         logs
             Continuously show container logs. Hit Ctrl-C to stop log output.
+            The output will be limited to the last 500 lines, as there might
+            be way more log content, which will take a long time to show up
+            to the end.
         -h|help
             Show this help.
     "
@@ -77,7 +80,7 @@ startALiWa() {
     info "    ALiWa will be able to connect as soon as the Alias container has"
     info "    finished it's startup phase, which will take some seconds..."
     info "    You can safely cancel the log output using Ctrl-C"
-    docker-compose up -d && docker-compose logs -f
+    docker-compose up -d && docker compose logs --tail=500 -f
     info " -> Done"
 }
 
@@ -123,7 +126,7 @@ forceCleanup() {
 
 showLogs() {
     info "Use Ctrl-C to stop log output"
-    docker-compose logs -f
+    docker-compose logs --tail=500 -f
 }
 
 if [[ ! -e .env ]] ; then
