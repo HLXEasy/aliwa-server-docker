@@ -12,17 +12,17 @@
 set +x
 
 echo "Checking connection to MariaDB"
-until mysql -u${MARIADB_USER} -p${MARIADB_PASSWORD} -h aliwa-database -e "quit" 2>/dev/null ; do
+until mysql -u${MARIADB_USER} -p${MARIADB_PASSWORD} -h ${MARIADB_HOST} -e "quit" 2>/dev/null ; do
     >&2 echo " -> MariaDB is unavailable - sleeping"
     sleep 1
 done
 echo " -> Connection successful"
 
 cd /opt/aliwa-server
-foundTxInputTable=$(mysql -u${MARIADB_USER} -p${MARIADB_PASSWORD} -h aliwa-database -D ${MARIADB_DATABASE} -e "show tables like 'tx_inputs';")
+foundTxInputTable=$(mysql -u${MARIADB_USER} -p${MARIADB_PASSWORD} -h ${MARIADB_HOST} -D ${MARIADB_DATABASE} -e "show tables like 'tx_inputs';")
 if [[ -z "$foundTxInputTable" ]] ; then
     echo "Creating initial ALiWa tables"
-    mysql -u${MARIADB_USER} -p${MARIADB_PASSWORD} -h aliwa-database -D ${MARIADB_DATABASE} < aliwa_server.sql
+    mysql -u${MARIADB_USER} -p${MARIADB_PASSWORD} -h ${MARIADB_HOST} -D ${MARIADB_DATABASE} < aliwa_server.sql
     echo " -> Done"
 else
     echo "ALiWa tables already existing on database, skipping initialization step"
