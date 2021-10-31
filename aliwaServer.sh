@@ -134,17 +134,13 @@ if [[ ! -e .env ]] ; then
     setupTestnet)
         # TESTNET settings
         ALIAS_CHAIN_START_SYNC_HEIGHT=765000
-        ALIAS_WALLET_HOST=alias-wallet-testnet
         ALIAS_WALLET_RPCPORT=36757
-        MARIADB_HOST=aliwa-database-testnet
         USE_TESTNET=true
         ;;
     setupMainnet)
         # MAINNET settings
         ALIAS_CHAIN_START_SYNC_HEIGHT=1970000
-        ALIAS_WALLET_HOST=alias-wallet-mainnet
         ALIAS_WALLET_RPCPORT=36657  # MAINNET
-        MARIADB_HOST=aliwa-database-mainnet
         USE_TESTNET=false
         ;;
     *)
@@ -158,9 +154,7 @@ if [[ ! -e .env ]] ; then
     randomRPCPassword=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 44 | head -n 1)
     randomMariadbPassword=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 44 | head -n 1)
     randomMariadbRootPassword=$(tr -dc 'a-zA-Z0-9' < /dev/urandom | fold -w 44 | head -n 1)
-    sed -e "s/ALIAS_WALLET_HOST=.*\$/ALIAS_WALLET_HOST=${ALIAS_WALLET_HOST}/g" \
-        -e "s/ALIAS_WALLET_RPCPASSWORD=.*\$/ALIAS_WALLET_RPCPASSWORD=${randomRPCPassword}/g" \
-        -e "s/MARIADB_HOST=.*\$/MARIADB_HOST=${MARIADB_HOST}/g" \
+    sed -e "s/ALIAS_WALLET_RPCPASSWORD=.*\$/ALIAS_WALLET_RPCPASSWORD=${randomRPCPassword}/g" \
         -e "s/MARIADB_PASSWORD=.*\$/MARIADB_PASSWORD=${randomMariadbPassword}/g" \
         -e "s/MARIADB_ROOT_PASSWORD=.*\$/MARIADB_ROOT_PASSWORD=${randomMariadbRootPassword}/g" \
         -e "s/ALIAS_CHAIN_START_SYNC_HEIGHT=.*\$/ALIAS_CHAIN_START_SYNC_HEIGHT=${ALIAS_CHAIN_START_SYNC_HEIGHT}/g" \

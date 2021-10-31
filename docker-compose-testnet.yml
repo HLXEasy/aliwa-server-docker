@@ -11,7 +11,7 @@ services:
       - RPCUSER=${ALIAS_WALLET_RPCUSER}
       - TESTNET=true
     ports:
-      - "36657:36657"
+      - "36757:36757"
     volumes:
       - alias-data-testnet:/alias
     deploy:
@@ -25,11 +25,13 @@ services:
     environment:
       - RPCPASSWORD=${ALIAS_WALLET_RPCPASSWORD}
       - RPCUSER=${ALIAS_WALLET_RPCUSER}
-      - RPCPORT=36657
+      - RPCPORT=36757
+      - MARIADB_HOST=aliwa-database-testnet
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - ALIAS_WALLET_HOST=alias-wallet-testnet
       - ALIAS_CHAIN_START_SYNC_HEIGHT=${ALIAS_CHAIN_START_SYNC_HEIGHT}
     ports:
       - "1521:1521"
