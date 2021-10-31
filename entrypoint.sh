@@ -47,6 +47,7 @@ sed -i \
     -e "s/^rpcuser=.*\$/rpcuser=${RPCUSER}/g" \
     -e "s/^rpcpassword=.*\$/rpcpassword=${RPCPASSWORD}/g" \
     -e "s/^rpcconnect=.*\$/rpcconnect=${ALIAS_WALLET_HOST}/g" \
+    -e "s/^rpcport=.*\$/rpcport=${RPCPORT}/g" \
     /root/.aliaswallet/alias.conf
 
 # ToDo: Implement proper check if Alias wallet is up and running!
