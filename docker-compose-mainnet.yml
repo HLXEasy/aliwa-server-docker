@@ -11,7 +11,7 @@ services:
       - RPCUSER=${ALIAS_WALLET_RPCUSER}
       - TESTNET=false
     ports:
-      - 36657:36657
+      - "36657:36657"
     volumes:
       - alias-data-mainnet:/alias
     deploy:
@@ -32,9 +32,9 @@ services:
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
       - ALIAS_CHAIN_START_SYNC_HEIGHT=${ALIAS_CHAIN_START_SYNC_HEIGHT}
     ports:
-      - 1521:1521
-      - 8080:8080
-      - 5500:5500
+      - "1521:1521"
+      - "8080:8080"
+      - "5500:5500"
 #    volumes:
 #      - aliwa-data:/opt/aliwa
     depends_on:
@@ -50,7 +50,7 @@ services:
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
     ports:
-      - 3306:3306
+      - "3306:3306"
     volumes:
       - mariadb-data-mainnet:/var/lib/mysql
 
