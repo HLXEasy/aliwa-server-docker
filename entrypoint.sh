@@ -35,6 +35,7 @@ sed -i \
     -e "s/cnf_username.*\$/cnf_username = \"${RPCUSER}\"/g" \
     -e "s/cnf_password.*\$/cnf_password = \"${RPCPASSWORD}\"/g" \
     -e "s/cnf_db_host.*\$/cnf_db_host = \"${MARIADB_HOST}\"/g" \
+    -e "s/cnf_db_port.*\$/cnf_db_port = \"${MARIADB_PORT}\"/g" \
     -e "s/cnf_db_user.*\$/cnf_db_user = \"${MARIADB_USER}\"/g" \
     -e "s/cnf_db_password.*\$/cnf_db_password = \"${MARIADB_PASSWORD}\"/g" \
     -e "s/cnf_db_database.*\$/cnf_db_database = \"${MARIADB_DATABASE}\"/g" \
