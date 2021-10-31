@@ -30,11 +30,11 @@ fi
 
 echo "Updating ALiWa configuration"
 sed -i \
-    -e "s/cnf_host.*\$/cnf_host = \"alias-wallet\"/g" \
+    -e "s/cnf_host.*\$/cnf_host = \"${ALIAS_WALLET_HOST}\"/g" \
     -e "s/cnf_port.*\$/cnf_port = \"${RPCPORT}\"/g" \
     -e "s/cnf_username.*\$/cnf_username = \"${RPCUSER}\"/g" \
     -e "s/cnf_password.*\$/cnf_password = \"${RPCPASSWORD}\"/g" \
-    -e "s/cnf_db_host.*\$/cnf_db_host = \"aliwa-database\"/g" \
+    -e "s/cnf_db_host.*\$/cnf_db_host = \"${MARIADB_HOST}\"/g" \
     -e "s/cnf_db_user.*\$/cnf_db_user = \"${MARIADB_USER}\"/g" \
     -e "s/cnf_db_password.*\$/cnf_db_password = \"${MARIADB_PASSWORD}\"/g" \
     -e "s/cnf_db_database.*\$/cnf_db_database = \"${MARIADB_DATABASE}\"/g" \
@@ -45,7 +45,7 @@ echo "Updating Shell-UI configuration"
 sed -i \
     -e "s/^rpcuser=.*\$/rpcuser=${RPCUSER}/g" \
     -e "s/^rpcpassword=.*\$/rpcpassword=${RPCPASSWORD}/g" \
-    -e "s/^rpcconnect=.*\$/rpcconnect=alias-wallet/g" \
+    -e "s/^rpcconnect=.*\$/rpcconnect=${ALIAS_WALLET_HOST}/g" \
     /root/.aliaswallet/alias.conf
 
 # ToDo: Implement proper check if Alias wallet is up and running!
