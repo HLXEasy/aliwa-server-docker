@@ -71,6 +71,12 @@ services:
         ${TOR_SERVICE_KEY1}
 
 volumes:
-  alias-data-mainnet: { }
-#  aliwa-data-mainnet: { }
-  mariadb-data-mainnet: { }
+  alias-data-mainnet:
+    external:
+      name: aliwa-server_alias-data-mainnet
+  mariadb-data-mainnet:
+    external:
+      name: aliwa-server_mariadb-data-mainnet
+#  aliwa-data-mainnet:
+#    external:
+#      name: aliwa-server_aliwa-data-mainnet

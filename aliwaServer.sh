@@ -75,6 +75,18 @@ startALiWa() {
     else
         bootstrapALiWa
     fi
+#    if docker volume ls | grep -q "${ALIWA_SERVER_VOLUME}" ; then
+#        info " -> Using existing Docker volume ${ALIWA_SERVER_VOLUME}"
+#    else
+#        info " -> Creating named volume ${ALIWA_SERVER_VOLUME}"
+#        docker volume create "${ALIWA_SERVER_VOLUME}"
+#    fi
+    if docker volume ls | grep -q "${ALIWA_DATABASE_VOLUME}" ; then
+        info " -> Using existing Docker volume ${ALIWA_DATABASE_VOLUME}"
+    else
+        info " -> Creating named volume ${ALIWA_DATABASE_VOLUME}"
+        docker volume create "${ALIWA_DATABASE_VOLUME}"
+    fi
     info " -> Starting main ALiWa containers"
     info "    Please ignore initial errors during ALiWa server startup!"
     info "    ALiWa will be able to connect as soon as the Alias container has"
@@ -86,8 +98,8 @@ startALiWa() {
 
 bootstrapALiWa() {
     info "Bootstrapping ALIAS blockchain"
-    info " -> Creating named volume"
-    docker volume create ${ALIAS_WALLET_VOLUME}
+    info " -> Creating named volume ${ALIAS_WALLET_VOLUME}"
+    docker volume create "${ALIAS_WALLET_VOLUME}"
     info " -> Starting bootstrap container"
     info " -> Patience, the download and extraction of 2G would take some time..."
     cd ${ownLocation}/chain-bootstrapper
@@ -195,9 +207,9 @@ while getopts h? option; do
     esac
 done
 
-ALIAS_WALLET_VOLUME="docker-aliwa-server_alias-data${DOCKER_VOLUME_SUFFIX}"
-ALIWA_DATABASE_VOLUME="docker-aliwa-server_mariadb-data${DOCKER_VOLUME_SUFFIX}"
-ALIWA_SERVER_VOLUME="docker-aliwa-server_aliwa-data${DOCKER_VOLUME_SUFFIX}"
+ALIAS_WALLET_VOLUME="aliwa-server_alias-data${DOCKER_VOLUME_SUFFIX}"
+ALIWA_DATABASE_VOLUME="aliwa-server_mariadb-data${DOCKER_VOLUME_SUFFIX}"
+ALIWA_SERVER_VOLUME="aliwa-server_aliwa-data${DOCKER_VOLUME_SUFFIX}"
 
 case "${1}" in
 start)

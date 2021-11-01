@@ -71,6 +71,12 @@ services:
         ${TOR_SERVICE_KEY1}
 
 volumes:
-  alias-data-testnet: { }
-#  aliwa-data-testnet: { }
-  mariadb-data-testnet: { }
+  alias-data-testnet:
+    external:
+      name: aliwa-server_alias-data-testnet
+  mariadb-data-testnet:
+    external:
+      name: aliwa-server_mariadb-data-testnet
+#  aliwa-data-testnet:
+#    external:
+#      name: aliwa-server_aliwa-data-testnet

@@ -14,4 +14,4 @@ services:
 volumes:
   alias-data:
     external:
-      name: docker-aliwa-server_alias-data${DOCKER_VOLUME_SUFFIX}
+      name: aliwa-server_alias-data${DOCKER_VOLUME_SUFFIX}
