@@ -64,7 +64,7 @@ services:
       - aliwa-server-testnet
     environment:
       # Set mapping ports
-      SERVICE1_TOR_SERVICE_HOSTS: 6757:aliwa-server-testnet:3000
+      SERVICE1_TOR_SERVICE_HOSTS: 3000:aliwa-server-testnet:3000,6757:aliwa-server-testnet:3000
       SERVICE1_TOR_SERVICE_VERSION: '3'
       # Tor v3 address private key base 64 encoded
       SERVICE1_TOR_SERVICE_KEY: |
