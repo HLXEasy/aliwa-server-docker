@@ -34,12 +34,13 @@ services:
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
       - ALIAS_WALLET_HOST=alias-wallet-mainnet
       - ALIAS_CHAIN_START_SYNC_HEIGHT=${ALIAS_CHAIN_START_SYNC_HEIGHT}
+      - SERVER_MODE=MAINNET
 #    ports:
 #      - "1521:1521"
 #      - "8080:8080"
 #      - "5500:5500"
 #    volumes:
-#      - aliwa-data:/opt/aliwa
+#      - aliwa-data-mainnet:/opt/aliwa
     depends_on:
       - "alias-wallet-mainnet"
       - "aliwa-database-mainnet"
