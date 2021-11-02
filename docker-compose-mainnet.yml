@@ -1,0 +1,83 @@
+version: '3'
+# SPDX-FileCopyrightText: © 2021 Alias Developers
+# SPDX-License-Identifier: MIT
+
+services:
+  alias-wallet-mainnet:
+    image: aliascash/docker-aliaswalletd:${ALIAS_VERSION}
+    container_name: alias-wallet-mainnet
+    environment:
+      - RPCPASSWORD=${ALIAS_WALLET_RPCPASSWORD}
+      - RPCUSER=${ALIAS_WALLET_RPCUSER}
+      - TESTNET=false
+    ports:
+      - "36657:36657"
+    volumes:
+      - alias-data-mainnet:/alias
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 3s
+
+  aliwa-server-mainnet:
+    image: aliascash/docker-aliwa-server:${ALIWA_VERSION}
+    container_name: aliwa-server-mainnet
+    environment:
+      - RPCPASSWORD=${ALIAS_WALLET_RPCPASSWORD}
+      - RPCUSER=${ALIAS_WALLET_RPCUSER}
+      - RPCPORT=36657
+      - MARIADB_HOST=aliwa-database-mainnet
+      - MARIADB_PORT=3306
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - ALIAS_WALLET_HOST=alias-wallet-mainnet
+      - ALIAS_CHAIN_START_SYNC_HEIGHT=${ALIAS_CHAIN_START_SYNC_HEIGHT}
+      - SERVER_MODE=MAINNET
+#    ports:
+#      - "1521:1521"
+#      - "8080:8080"
+#      - "5500:5500"
+#    volumes:
+#      - aliwa-data-mainnet:/opt/aliwa
+    depends_on:
+      - "alias-wallet-mainnet"
+      - "aliwa-database-mainnet"
+
+  aliwa-database-mainnet:
+    image: mariadb:${MARIADB_VERSION}
+    container_name: aliwa-database-mainnet
+    environment:
+      - MARIADB_DATABASE=${MARIADB_DATABASE}
+      - MARIADB_USER=${MARIADB_USER}
+      - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mariadb-data-mainnet:/var/lib/mysql
+
+  tor-hidden-service-mainnet:
+    image: goldy/tor-hidden-service:${TOR_VERSION}
+    container_name: tor-hidden-service-mainnet
+    links:
+      - aliwa-server-mainnet
+    environment:
+      # Set mapping ports
+      SERVICE1_TOR_SERVICE_HOSTS: 6657:aliwa-server-mainnet:3000
+      SERVICE1_TOR_SERVICE_VERSION: '3'
+      # Tor v3 address private key base 64 encoded
+      SERVICE1_TOR_SERVICE_KEY: |
+        ${TOR_SERVICE_KEY1}
+
+volumes:
+  alias-data-mainnet:
+    external:
+      name: aliwa-server_alias-data-mainnet
+  mariadb-data-mainnet:
+    external:
+      name: aliwa-server_mariadb-data-mainnet
+#  aliwa-data-mainnet:
+#    external:
+#      name: aliwa-server_aliwa-data-mainnet

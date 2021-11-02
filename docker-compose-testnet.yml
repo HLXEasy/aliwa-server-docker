@@ -3,71 +3,81 @@ version: '3'
 # SPDX-License-Identifier: MIT
 
 services:
-  alias-wallet:
+  alias-wallet-testnet:
     image: aliascash/docker-aliaswalletd:${ALIAS_VERSION}
-    container_name: alias-wallet
+    container_name: alias-wallet-testnet
     environment:
       - RPCPASSWORD=${ALIAS_WALLET_RPCPASSWORD}
       - RPCUSER=${ALIAS_WALLET_RPCUSER}
-      - TESTNET=${USE_TESTNET}
+      - TESTNET=true
     ports:
-      - 36657:36657
+      - "36757:36757"
     volumes:
-      - alias-data:/alias
+      - alias-data-testnet:/alias
     deploy:
       restart_policy:
         condition: on-failure
         delay: 3s
 
-  aliwa-server:
+  aliwa-server-testnet:
     image: aliascash/docker-aliwa-server:${ALIWA_VERSION}
-    container_name: aliwa-server
+    container_name: aliwa-server-testnet
     environment:
       - RPCPASSWORD=${ALIAS_WALLET_RPCPASSWORD}
       - RPCUSER=${ALIAS_WALLET_RPCUSER}
-      - RPCPORT=${ALIAS_WALLET_RPCPORT}
+      - RPCPORT=36757
+      - MARIADB_HOST=aliwa-database-testnet
+      - MARIADB_PORT=3306 # We're inside of the docker network, so connect using the internal port instead of mapped 3307!
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      - ALIAS_WALLET_HOST=alias-wallet-testnet
       - ALIAS_CHAIN_START_SYNC_HEIGHT=${ALIAS_CHAIN_START_SYNC_HEIGHT}
-    ports:
-      - 1521:1521
-      - 8080:8080
-      - 5500:5500
+      - SERVER_MODE=TESTNET
+#    ports:
+#      - "1521:1521"
+#      - "8080:8080"
+#      - "5500:5500"
 #    volumes:
-#      - aliwa-data:/opt/aliwa
+#      - aliwa-data-testnet:/opt/aliwa
     depends_on:
-      - "alias-wallet"
-      - "aliwa-database"
+      - "alias-wallet-testnet"
+      - "aliwa-database-testnet"
 
-  aliwa-database:
+  aliwa-database-testnet:
     image: mariadb:${MARIADB_VERSION}
-    container_name: aliwa-database
+    container_name: aliwa-database-testnet
     environment:
       - MARIADB_DATABASE=${MARIADB_DATABASE}
       - MARIADB_USER=${MARIADB_USER}
       - MARIADB_PASSWORD=${MARIADB_PASSWORD}
       - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
     ports:
-      - 3306:3306
+      - "3307:3306"
     volumes:
-      - mariadb-data:/var/lib/mysql
+      - mariadb-data-testnet:/var/lib/mysql
 
-  tor-hidden-service:
+  tor-hidden-service-testnet:
     image: goldy/tor-hidden-service:${TOR_VERSION}
-    container_name: tor-hidden-service
+    container_name: tor-hidden-service-testnet
     links:
-      - aliwa-server
+      - aliwa-server-testnet
     environment:
       # Set mapping ports
-      SERVICE1_TOR_SERVICE_HOSTS: 3000:aliwa-server:3000
+      SERVICE1_TOR_SERVICE_HOSTS: 3000:aliwa-server-testnet:3000,6757:aliwa-server-testnet:3000
       SERVICE1_TOR_SERVICE_VERSION: '3'
       # Tor v3 address private key base 64 encoded
       SERVICE1_TOR_SERVICE_KEY: |
         ${TOR_SERVICE_KEY1}
 
 volumes:
-  alias-data: { }
-#  aliwa-data: { }
-  mariadb-data: { }
+  alias-data-testnet:
+    external:
+      name: aliwa-server_alias-data-testnet
+  mariadb-data-testnet:
+    external:
+      name: aliwa-server_mariadb-data-testnet
+#  aliwa-data-testnet:
+#    external:
+#      name: aliwa-server_aliwa-data-testnet
