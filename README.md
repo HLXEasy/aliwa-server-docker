@@ -1,10 +1,8 @@
 # ALiWa@Docker - Dockerized Alias Light Wallet
 [![Latest release](https://img.shields.io/github/v/release/aliascash/docker-aliwa-server?label=Release&color=%2300bf00)](https://github.com/aliascash/docker-aliwa-server/releases/latest)
-[![Latest develop build](https://img.shields.io/github/v/release/aliascash/docker-aliwa-server?include_prereleases&label=Develop-Build)](https://github.com/aliascash/docker-aliwa-server/releases)
 [![Discord](https://img.shields.io/discord/426769724018524161?logo=discord)](https://discord.gg/ckkrb8m)
 [![Reddit](https://img.shields.io/badge/reddit-join-orange?logo=reddit)](https://www.reddit.com/r/AliasCash/)
 [![Build Status Master](https://github.com/aliascash/docker-aliwa-server/actions/workflows/build-master.yml/badge.svg)](https://github.com/aliascash/docker-aliwa-server/actions)
-[![Build Status Develop](https://github.com/aliascash/docker-aliwa-server/actions/workflows/build-develop.yml/badge.svg)](https://github.com/aliascash/docker-aliwa-server/actions)
 
 Alias is a Secure Proof-of-Stake (PoSv3) Network with Anonymous Transaction Capability.
 ALiWa is a light wallet implementation for Alias.
@@ -31,15 +29,18 @@ ALiWa is a light wallet implementation for Alias.
   $ git clone https://github.com/aliascash/docker-aliwa-server
   $ cd docker-aliwa-server
   $ ./aliwaServer.sh
-
+  Info   : Configuration file '.env' not found, please tell the script if 
+           to setup for MAINNET or TESTNET!
+  
     Usage: aliwaServer.sh [Options]
 
     Handle ALiWa server
 
-    Initial execution will just create the configuration file '.env' and exit.
+    Initial execution requires usage of option setupMainnet or setupTestnet.
+    This will just create the configuration file '.env' and exit.
     After that the configuration needs to be completed with the base64 encoded
     private key of the Tor Onion v3 address, which should be used to access
-    the ALiWa server.
+    the ALiWa server. Example: 'cat hs_ed25519_secret_key | base64'
 
     The configuration also contains randomly generated credentials to access
     the Alias daemon and the ALiWa database. As long as the Alias daemon
@@ -48,10 +49,11 @@ ALiWa is a light wallet implementation for Alias.
     '/alias/.aliaswallet/alias.conf' on the Alias daemon container.
 
     Options:
+        setupMainnet|setupTestnet
+            One of these options must be used initially to define which type
+            of ALiWa server you want to run: MAINNET or TESTNET
         start
             Start ALiWa and all required containers
-        setup
-            Setup ALiWa. Not required as 'start' include this option
         stop
             Stop ALiWa and all required containers
         clean
@@ -64,14 +66,20 @@ ALiWa is a light wallet implementation for Alias.
             Wipe out all Docker volumes. This includes the blockchain volume
             too, so the Bootstrap archive will be downloaded again within
             the next start.
+        bootstrap
+            Bootstrap ALiWa by using Alias bootstrap archive. Option 'start'
+            includes usage of this option.
         logs
             Continuously show container logs. Hit Ctrl-C to stop log output.
+            The output will be limited to the last 500 lines, as there might
+            be way more log content, which will take a long time to show up
+            to the end.
         -h|help
             Show this help.
 
   ```
 
-As written on the help output, the script will exit on the first run right after the creation of the configuration file `.env`, as this file needs to be updated manually after that.
+As written on the help output, the script requires the usage of the option *setupMainnet* or *setupTestnet* to generate the configuration file `.env`. After that the scripts exits, as this file needs to be updated manually after that.
 
 ### Configuring Tor hidden service
 After the initial run of `aliwaServer.sh` the value of `TOR_SERVICE_KEY1` on the created configuration file `.env` needs to be updated. To do so, the private key from the to-be-used Onion v3 address must be encodet using Base64. The result must be put onto the configuration file **as one line**.

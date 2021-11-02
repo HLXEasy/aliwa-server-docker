@@ -26,10 +26,11 @@ showUsage() {
 
     Handle ALiWa server
 
-    Initial execution will just create the configuration file '.env' and exit.
+    Initial execution requires usage of option setupMainnet or setupTestnet.
+    This will just create the configuration file '.env' and exit.
     After that the configuration needs to be completed with the base64 encoded
     private key of the Tor Onion v3 address, which should be used to access
-    the ALiWa server.
+    the ALiWa server. Example: 'cat hs_ed25519_secret_key | base64'
 
     The configuration also contains randomly generated credentials to access
     the Alias daemon and the ALiWa database. As long as the Alias daemon
